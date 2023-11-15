@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { BigButton } from '../commons/ButtonStyle';
 import { Link } from 'react-router-dom';
 import { FiLock, FiUserPlus, FiSmile } from 'react-icons/fi';
-
+// 주석
 const LoginText = styled(InputText)`
   display: block;
   & + & {
