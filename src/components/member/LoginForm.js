@@ -1,12 +1,15 @@
 import { InputText } from '../commons/inputStyle';
 import { useTranslation } from 'react-i18next';
 import React, { useRef, useEffect } from 'react';
-import Message from '../commons/Message';
+// import Message from '../commons/Message';
 import styled from 'styled-components';
 import { BigButton } from '../commons/ButtonStyle';
 import { Link } from 'react-router-dom';
 import { FiLock, FiUserPlus, FiSmile } from 'react-icons/fi';
-// 주석
+import loadable from '@loadable/component';
+
+const Message = loadable(() => import('../commons/Message'));
+
 const LoginText = styled(InputText)`
   display: block;
   & + & {
@@ -59,7 +62,7 @@ const LoginForm = (onSubmit, errors) => {
         ref={refEmail}
       />
       {errors.email && errors.email.message && (
-        <Message>{errors.email}</Message>
+        <Message>{errors.email.message}</Message>
       )}
 
       <LoginText type="password" name="password" placeholder={t('비밀번호')} />
