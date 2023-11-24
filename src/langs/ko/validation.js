@@ -4,6 +4,7 @@ const validation = {
   NotBlank_confirmPaasword: '비밀번호를 확인하세요',
   NotBlank_name: '회원명을 입력하세요',
   AssertTrue_join_agree: '회원가입 약관 동의를 눌러주세요',
+  Login_fail: '이메일 또는 비밀번호가 일치하지 않습니다.',
 };
 
 export default validation;

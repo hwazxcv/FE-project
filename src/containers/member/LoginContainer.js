@@ -1,11 +1,87 @@
+import React, { useState, useCallback, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import { requestLogin, updateUserInfo } from '../../api/member/login';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from '../../components/member/LoginForm';
+import cookies from 'react-cookies';
+import UserContext from '../../modules/User';
 
 const LoginContainer = () => {
+  const [errors, setErrors] = useState({});
+  const [form, setForm] = useState({});
+
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const {
+    action: { updateUserInfo },
+  } = useContext(UserContext);
+
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      let hasError = false;
+      const _errors = {};
+      setErrors(() => _errors);
+
+      /* 필수 항목 검증 S */
+      const requiredFields = {
+        email: t('NotBlank_email'),
+        password: t('NotBlank_password'),
+      };
+
+      for (const field in requiredFields) {
+        if (!form[field] || !form[field].trim()) {
+          _errors[field] = requiredFields[field];
+          hasError = true;
+        }
+      }
+
+      /* 필수 항목 검증 E */
+
+      //로그인처리
+      if (hasError) {
+        setErrors(() => _errors);
+        return;
+      }
+      //로그인처리
+      requestLogin(form)
+        .then((token) => {
+          //JWT토큰을 쿠키에 저장
+          cookies.save('token', token, {
+            path: '/',
+          });
+          //양식 초기화
+          setForm(() => {});
+          //로그인 상태 ( isLogin -> true), userInfo에 회원 정보 업데이트
+          updateUserInfo();
+
+          //페이지 이동
+          navigate('/', { replace: true });
+        })
+        .catch(() => {
+          setErrors(() => ({
+            global: t('Login_fail'),
+          }));
+        });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form],
+  );
+
+  const onChange = useCallback((e) => {
+    const target = e.currentTarget;
+    setForm((form) => ({
+      ...form,
+      [target.name]: target.value,
+    }));
+  }, []);
+
   return (
     <>
-      <LoginForm />
+      <LoginForm onChange={onChange} onSubmit={onSubmit} errors={errors} />
     </>
   );
 };
 
-export default LoginContainer;
+export default React.memo(LoginContainer);
