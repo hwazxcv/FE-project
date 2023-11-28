@@ -1,11 +1,10 @@
+import React, { useContext } from 'react';
+import UserContext from '../../modules/User';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import colorNames from '../../styles/colors';
-import React, { useContext } from 'react';
-import UserContext from '../../modules/User';
-
 const { info } = colorNames;
 
 const OuterBox = styled.header`
@@ -45,7 +44,7 @@ const OuterBox = styled.header`
 const Header = () => {
   const { t } = useTranslation();
   const {
-    state: { isLogin },
+    state: { isLogin, isAdmin },
   } = useContext(UserContext);
 
   return (
@@ -68,6 +67,14 @@ const Header = () => {
             >
               {t('마이페이지')}
             </NavLink>
+            {isAdmin && (
+              <NavLink
+                to="/admin"
+                className={({ isActive }) => classNames({ on: isActive })}
+              >
+                {t('사이트 관리')}
+              </NavLink>
+            )}
           </>
         ) : (
           <>

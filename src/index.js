@@ -5,7 +5,9 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import ErrorPage from './pages/commons/ErrorPage';
+
 import { UserProvider } from './modules/User';
+import { MainClassProvider } from './modules/mainClass';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -17,9 +19,11 @@ root.render(
     <UserProvider>
       <HelmetProvider>
         <BrowserRouter>
-          <ErrorPage>
-            <App />
-          </ErrorPage>
+          <MainClassProvider>
+            <ErrorPage>
+              <App />
+            </ErrorPage>
+          </MainClassProvider>
         </BrowserRouter>
       </HelmetProvider>
     </UserProvider>

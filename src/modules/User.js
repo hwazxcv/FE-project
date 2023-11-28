@@ -1,7 +1,6 @@
 // 전역에 관리할 설정
 import { createContext, useState, useCallback } from 'react';
 import { getUserInfo } from '../api/member/login';
-import colorNames from '../styles/colors';
 
 const initialState = {
   state: { isLogin: false, userInfo: {} },
